@@ -38,5 +38,8 @@
     document.title = "A new title";
 
 document.getElementById('header-title').style.border = "thick solid black";
+var list=document.getElementsByClassName('list-group-item');
+list[2].style.color='red';
+for(var i in list){list[i].style.fontWeight='bold';}
 </script>
 </html>
