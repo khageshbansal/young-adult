@@ -7,8 +7,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
   <title>Item Lister</title>
 </head>
-
-
 <body>
   <header id="main-header" class="bg-success text-white p-4 mb-3">
     <div class="container">
@@ -28,22 +26,26 @@
       <li class="list-group-item">Item 2</li>
       <li class="list-group-item">Item 3</li>
       <li class="list-group-item">Item 4</li>
-      <li class="list-group-item">Item 5</li>
-      <li class="list-group-item">Item 6</li>
-      <li class="list-group-item">Item 7</li>
     </ul>
    </div>
   </div>
 
 </body>
 <script>
-    
+  var list=document.querySelector('#items');
 
-var list=document.querySelectorAll('.list-group-item')
-list[1].style.backgroundColor='green';
-list[2].style.display='none';
+  list.parentElement.style.backgroundColor='grey';
+  list.lastElementChild.innerText='this is last element child';
+  list.firstElementChild.innerText='this is first element child';
 
-document.querySelectorAll('.list-group-item')[1].style.color='red';
-for(var i=0;i<list.length;i=i+2){list[i].style.backgroundColor='green';}
+
+  var li=document.createElement("li");
+  li.setAttribute('style','color:red;font-weight:bold;');
+  li.innerText='this is newly created node from js';
+  li.className='list-group-item';
+  list.appendChild(li);
+  console.log(li);
+
+
 </script>
 </html>
