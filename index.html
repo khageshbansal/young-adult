@@ -28,6 +28,9 @@
       <li class="list-group-item">Item 2</li>
       <li class="list-group-item">Item 3</li>
       <li class="list-group-item">Item 4</li>
+      <li class="list-group-item">Item 5</li>
+      <li class="list-group-item">Item 6</li>
+      <li class="list-group-item">Item 7</li>
     </ul>
    </div>
   </div>
@@ -36,11 +39,11 @@
 <script>
     
 
+var list=document.querySelectorAll('.list-group-item')
+list[1].style.backgroundColor='green';
+list[2].style.display='none';
 
-  var ul = document.getElementById("items");
-  var div = document.createElement("div");
-  div.innerHTML='<li class="myNewClass list-group-item">new added itm</li>'
-  ul.appendChild(div);
-
+document.querySelectorAll('.list-group-item')[1].style.color='red';
+for(var i=0;i<list.length;i=i+2){list[i].style.backgroundColor='green';}
 </script>
 </html>
