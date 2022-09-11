@@ -17,15 +17,41 @@
    <div id="main" class="card card-body">
     <h2 class="title">Add Items</h2>
     <form class="form-inline mb-3">
-      <input type="text" class="form-control mr-2">
-      <input type="submit" class="btn btn-dark" value="Submit">
+      <input type="text" class="form-control mr-2" id="textBox">
+      <input type="button" class="btn btn-dark" value="Submit" onclick="addtolist()">
     </form>
     <h2 class="title">Items</h2>
     <ul id="items" class="list-group">
-      <li class="list-group-item">Item 1</li>
-      <li class="list-group-item">Item 2</li>
-      <li class="list-group-item">Item 3</li>
-      <li class="list-group-item">Item 4</li>
+      <li class="list-group-item d-flex justify-content-between">
+        Item 1
+        <div><button type="button" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-warning">Edit</button>
+      </div>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+      Item 2
+      <div><button type="button" class="btn btn-danger">Delete</button>
+      <button type="button" class="btn btn-warning">Edit</button>
+    </div>
+  </li>
+  <li class="list-group-item d-flex justify-content-between">
+    Item 3
+    <div><button type="button" class="btn btn-danger">Delete</button>
+    <button type="button" class="btn btn-warning">Edit</button>
+  </div>
+</li>
+<li class="list-group-item d-flex justify-content-between">
+  Item 4
+  <div><button type="button" class="btn btn-danger">Delete</button>
+  <button type="button" class="btn btn-warning">Edit</button>
+</div>
+</li>
+<li class="list-group-item d-flex justify-content-between">
+  Item 5
+  <div><button type="button" class="btn btn-danger" onclick="deleteFUnc()">Delete</button>
+  <button type="button" class="btn btn-warning">Edit</button>
+</div>
+</li>
     </ul>
    </div>
   </div>
@@ -33,19 +59,23 @@
 </body>
 <script>
   var list=document.querySelector('#items');
+  var textValue=document.querySelector('#textBox');
+  
+function addtolist(){
+ var newNode=document.createElement('li');
+ newNode.className='list-group-item d-flex justify-content-between';
+ newNode.innerHTML=`${textValue.value}<div><button type="button" class="btn btn-danger">Delete</button><button type="button" class="btn btn-warning">Edit</button></div>`;
+ list.appendChild(newNode);
+ textValue.value='';
+}
 
-  list.parentElement.style.backgroundColor='grey';
-  list.lastElementChild.innerText='this is last element child';
-  list.firstElementChild.innerText='this is first element child';
-
-
-  var li=document.createElement("li");
-  li.setAttribute('style','color:red;font-weight:bold;');
-  li.innerText='this is newly created node from js';
-  li.className='list-group-item';
-  list.appendChild(li);
-  console.log(li);
-
-
+list.addEventListener('click',deleteFunc);
+function deleteFunc(e){
+  e.preventDefault();
+  if (e.target.classList.contains('btn-danger')){
+    var listEle=e.target.parentElement.parentElement;
+    list.removeChild(listEle);
+  }
+}
 </script>
 </html>
