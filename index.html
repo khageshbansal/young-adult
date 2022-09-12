@@ -2,102 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-  <title>Item Lister</title>
+  <title>Document</title>
 </head>
+
 <body>
-  <header id="main-header" class="bg-success text-white p-4 mb-3 d-flex justify-content-between">
-    <div class="container">
-      <h1 id="header-title">Item Lister <span style="display:none">123</span></h1>
-    </div>
-    <form class="form-inline mb-3 d-flex justify-content-between ">
-      <input type="text" class="form-control m-2" id="searchbox">
-      <input type="button" class="btn btn-dark ml-2" value="Search">
-    </form>
-  </header>
-  <div class="container">
-   <div id="main" class="card card-body">
-    <h2 class="title">Add Items</h2>
-    <form class="form-inline mb-3">
-      <input type="text" class="form-control mr-2" id="textBox">
-      <input type="text" class="form-control mr-2" id="descriptionbox" placeholder="enter description">
-      <input type="button" class="btn btn-dark" value="Submit" onclick="addtolist()">
-    </form>
-    <h2 class="title">Items</h2>
-    <ul id="items" class="list-group">
-      <li class="list-group-item d-flex justify-content-between">
-        Item 1
-        <div><button type="button" class="btn btn-danger btn-sm">Delete</button>
-        <button type="button" class="btn btn-warning btn-sm">Edit</button>
-      </div>
-    </li>
-    <li class="list-group-item d-flex justify-content-between">
-      Item 2
-      <div><button type="button" class="btn btn-danger btn-sm">Delete</button>
-      <button type="button" class="btn btn-warning btn-sm">Edit</button>
-    </div>
-  </li>
-  <li class="list-group-item d-flex justify-content-between">
-    Item 3
-    <div><button type="button" class="btn btn-danger btn-sm">Delete</button>
-    <button type="button" class="btn btn-warning btn-sm">Edit</button>
-  </div>
-</li>
-<li class="list-group-item d-flex justify-content-between">
-  Item 4
-  <div><button type="button" class="btn btn-danger btn-sm">Delete</button>
-  <button type="button" class="btn btn-warning btn-sm">Edit</button>
-</div>
-</li>
-<li class="list-group-item d-flex justify-content-between">
-  Item 5
-  <div><button type="button" class="btn btn-danger btn-sm" onclick="deleteFUnc()">Delete</button>
-  <button type="button" class="btn btn-warning btn-sm">Edit</button>
-</div>
-</li>
-    </ul>
-   </div>
-  </div>
-
+  <h4 class="heading">Enter Something</h4>
+      <input id="todo-input" type="text" />
+      <button onclick="addItem()" class="button expanded">Submit</button>
+  <ul id="list-items">
+  </ul>
 </body>
+
+
+<style>
+  .heading {
+  margin: 40px 0 15px;
+  text-transform: uppercase;
+  font-weight: bolder;
+}
+#list-items {
+  margin-top: 30px;
+}
+#list-items li {
+  font-size: 1.1em;
+  text-transform: capitalize;
+}
+
+</style>
+
+
+
 <script>
-  var list=document.querySelector('#items');
-  var textValue=document.querySelector('#textBox');
-  var descVal=document.querySelector('#descriptionbox');
-  var search=document.querySelector('#searchbox');
-  search.addEventListener('keyup',filterVal);
+  // items array that contains all todo items
+// JSON.parse is used to parse the stringified items from localStorage
+// if localStorage is empty, make the items variable an empty array
+var items = JSON.parse(localStorage.getItem('todo-list')) || [];
 
-  function filterVal(e){
-    var searchvalue=e.target.value.toLowerCase();
-    var arr=[...list.children]
-    arr.forEach(myFunc);
+// function to add item to the items array
+function addItem() {
+  var inputBox = document.querySelector('#todo-input');
+  var item = inputBox.value
+  if (item === "")
+    return alert("Enter Something");
 
-    function myFunc(item) {
-      var itemName=item.firstChild.textContent;
-      if(itemName.toLowerCase().indexOf(searchvalue) !=-1)item.className='list-group-item d-flex justify-content-between';
-      else item.className='d-none';
-}
-    
-
-  }
+  // If input is valid, add item to items array
+  items.push({
+    value: item,
+    time: (new Date()).toLocaleDateString("en-IN")
+  })
   
-function addtolist(){
- var newNode=document.createElement('li');
- newNode.className='list-group-item d-flex justify-content-between';
- newNode.innerHTML=`${textValue.value} ${descVal.value}<div><button type="button" class="btn btn-danger btn-sm">Delete</button><button type="button" class="btn btn-warning btn-sm">Edit</button></div>`;
- list.appendChild(newNode);
- textValue.value='';
+  // then convert to a string with JSON.stringify and save to localStorage
+  localStorage.setItem('todo-list', JSON.stringify(items));
+  
+  // call function to list all items
+  listItems();
+  
+  // clear input box
+  inputBox.value = "";
 }
 
-list.addEventListener('click',deleteFunc);
-function deleteFunc(e){
-  e.preventDefault();
-  if (e.target.classList.contains('btn-danger')){
-    var listEle=e.target.parentElement.parentElement;
-    list.removeChild(listEle);
-  }
+// function to remove item from array with Array.splice()
+// removes item, then saves new items array to localStorage
+function deleteItem(index) {
+  items.splice(index, 1);
+  localStorage.setItem('todo-list', JSON.stringify(items))
+  listItems();
 }
+
+
+// function that generates list of items and populates the html
+function listItems() {
+  var list = "";
+  for (var i = 0; i < items.length; i++) {
+    list+=`<li>${items[i].value} <span class='label alert' onclick='deleteItem(${i})'>delete</span></li>`
+  }
+  document.querySelector("#list-items").innerHTML = list;
+}
+
+// function to run when page loads
+(function() {
+  listItems();
+})();
 </script>
 </html>
