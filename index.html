@@ -8,48 +8,53 @@
   <title>Item Lister</title>
 </head>
 <body>
-  <header id="main-header" class="bg-success text-white p-4 mb-3">
+  <header id="main-header" class="bg-success text-white p-4 mb-3 d-flex justify-content-between">
     <div class="container">
       <h1 id="header-title">Item Lister <span style="display:none">123</span></h1>
     </div>
+    <form class="form-inline mb-3 d-flex justify-content-between ">
+      <input type="text" class="form-control m-2" id="searchbox">
+      <input type="button" class="btn btn-dark ml-2" value="Search">
+    </form>
   </header>
   <div class="container">
    <div id="main" class="card card-body">
     <h2 class="title">Add Items</h2>
     <form class="form-inline mb-3">
       <input type="text" class="form-control mr-2" id="textBox">
+      <input type="text" class="form-control mr-2" id="descriptionbox" placeholder="enter description">
       <input type="button" class="btn btn-dark" value="Submit" onclick="addtolist()">
     </form>
     <h2 class="title">Items</h2>
     <ul id="items" class="list-group">
       <li class="list-group-item d-flex justify-content-between">
         Item 1
-        <div><button type="button" class="btn btn-danger">Delete</button>
-        <button type="button" class="btn btn-warning">Edit</button>
+        <div><button type="button" class="btn btn-danger btn-sm">Delete</button>
+        <button type="button" class="btn btn-warning btn-sm">Edit</button>
       </div>
     </li>
     <li class="list-group-item d-flex justify-content-between">
       Item 2
-      <div><button type="button" class="btn btn-danger">Delete</button>
-      <button type="button" class="btn btn-warning">Edit</button>
+      <div><button type="button" class="btn btn-danger btn-sm">Delete</button>
+      <button type="button" class="btn btn-warning btn-sm">Edit</button>
     </div>
   </li>
   <li class="list-group-item d-flex justify-content-between">
     Item 3
-    <div><button type="button" class="btn btn-danger">Delete</button>
-    <button type="button" class="btn btn-warning">Edit</button>
+    <div><button type="button" class="btn btn-danger btn-sm">Delete</button>
+    <button type="button" class="btn btn-warning btn-sm">Edit</button>
   </div>
 </li>
 <li class="list-group-item d-flex justify-content-between">
   Item 4
-  <div><button type="button" class="btn btn-danger">Delete</button>
-  <button type="button" class="btn btn-warning">Edit</button>
+  <div><button type="button" class="btn btn-danger btn-sm">Delete</button>
+  <button type="button" class="btn btn-warning btn-sm">Edit</button>
 </div>
 </li>
 <li class="list-group-item d-flex justify-content-between">
   Item 5
-  <div><button type="button" class="btn btn-danger" onclick="deleteFUnc()">Delete</button>
-  <button type="button" class="btn btn-warning">Edit</button>
+  <div><button type="button" class="btn btn-danger btn-sm" onclick="deleteFUnc()">Delete</button>
+  <button type="button" class="btn btn-warning btn-sm">Edit</button>
 </div>
 </li>
     </ul>
@@ -60,11 +65,28 @@
 <script>
   var list=document.querySelector('#items');
   var textValue=document.querySelector('#textBox');
+  var descVal=document.querySelector('#descriptionbox');
+  var search=document.querySelector('#searchbox');
+  search.addEventListener('keyup',filterVal);
+
+  function filterVal(e){
+    var searchvalue=e.target.value.toLowerCase();
+    var arr=[...list.children]
+    arr.forEach(myFunc);
+
+    function myFunc(item) {
+      var itemName=item.firstChild.textContent;
+      if(itemName.toLowerCase().indexOf(searchvalue) !=-1)item.className='list-group-item d-flex justify-content-between';
+      else item.className='d-none';
+}
+    
+
+  }
   
 function addtolist(){
  var newNode=document.createElement('li');
  newNode.className='list-group-item d-flex justify-content-between';
- newNode.innerHTML=`${textValue.value}<div><button type="button" class="btn btn-danger">Delete</button><button type="button" class="btn btn-warning">Edit</button></div>`;
+ newNode.innerHTML=`${textValue.value} ${descVal.value}<div><button type="button" class="btn btn-danger btn-sm">Delete</button><button type="button" class="btn btn-warning btn-sm">Edit</button></div>`;
  list.appendChild(newNode);
  textValue.value='';
 }
