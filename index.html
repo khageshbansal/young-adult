@@ -8,53 +8,36 @@
 </head>
 
 <body>
-  <h4 class="heading">Enter Something</h4>
-      <input id="todo-input" type="text" />
-      <button onclick="addItem()" class="button expanded">Submit</button>
-  <ul id="list-items">
+  <h1 >Appointment Booking App</h1>
+      <input id="input" type="text" />
+      <input id="input2" type="text" />
+      <button onclick="addItem()">Submit</button>
+  <ul id="ul">
   </ul>
 </body>
 
 
-<style>
-  .heading {
-  margin: 40px 0 15px;
-  text-transform: uppercase;
-  font-weight: bolder;
-}
-#list-items {
-  margin-top: 30px;
-}
-#list-items li {
-  font-size: 1.1em;
-  text-transform: capitalize;
-}
-
-</style>
-
-
-
 <script>
-  // items array that contains all todo items
+  // items array that contains all entries
 // JSON.parse is used to parse the stringified items from localStorage
 // if localStorage is empty, make the items variable an empty array
-var items = JSON.parse(localStorage.getItem('todo-list')) || [];
-
+var items = JSON.parse(localStorage.getItem('appointment-app')) || [];
 // function to add item to the items array
 function addItem() {
-  var inputBox = document.querySelector('#todo-input');
+  var inputBox = document.querySelector('#input');
+  var inputBox2 = document.querySelector('#input2');
   var item = inputBox.value
-  if (item === "")
+  var item2 = inputBox2.value
+  if (item === "" && item2 === "" )
     return alert("Enter Something");
 
   // If input is valid, add item to items array
   items.push({
-    value: item,
-    time: (new Date()).toLocaleDateString("en-IN")
+    value: `${item} ${item2}`
   })
   
   // then convert to a string with JSON.stringify and save to localStorage
-  localStorage.setItem('todo-list', JSON.stringify(items));
+  localStorage.setItem('appointment-app', JSON.stringify(items));
   
   // call function to list all items
   listItems();
@@ -63,11 +46,12 @@ function addItem() {
   inputBox.value = "";
 }
 
+
 // function to remove item from array with Array.splice()
 // removes item, then saves new items array to localStorage
 function deleteItem(index) {
   items.splice(index, 1);
-  localStorage.setItem('todo-list', JSON.stringify(items))
+  localStorage.setItem('appointment-app', JSON.stringify(items))
   listItems();
 }
 
@@ -78,7 +62,7 @@ function listItems() {
   for (var i = 0; i < items.length; i++) {
     list+=`<li>${items[i].value} <span class='label alert' onclick='deleteItem(${i})'>delete</span></li>`
   }
-  document.querySelector("#list-items").innerHTML = list;
+  document.querySelector("#ul").innerHTML = list;
 }
 
 // function to run when page loads
