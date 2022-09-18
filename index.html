@@ -44,6 +44,7 @@ function addItem() {
   
   // clear input box
   inputBox.value = "";
+  inputBox2.value = "";
 }
 
 
@@ -56,11 +57,23 @@ function deleteItem(index) {
 }
 
 
+function editItem(index) {
+  var inputBox = document.querySelector('#input');
+  var inputBox2 = document.querySelector('#input2');
+  
+var deleteditem=  items.splice(index, 1)[0].value;
+var split=deleteditem.split(' ');
+inputBox.value=split[0];
+inputBox2.value=split[1];
+  listItems();
+}
+
+
 // function that generates list of items and populates the html
 function listItems() {
   var list = "";
   for (var i = 0; i < items.length; i++) {
-    list+=`<li>${items[i].value} <span class='label alert' onclick='deleteItem(${i})'>delete</span></li>`
+    list+=`<li>${items[i].value}  <span style="border:2px solid green;" onclick='editItem(${i})'>Edit</span> <span style="border:2px solid red;" onclick='deleteItem(${i})'>delete</span></li>`
   }
   document.querySelector("#ul").innerHTML = list;
 }
