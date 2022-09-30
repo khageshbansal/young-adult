@@ -8,9 +8,15 @@
 </head>
 
 <body>
-  <h1 >Appointment Booking App</h1>
-      <input id="input" type="text" />
-      <input id="input2" type="text" />
+  <h1 >Expense Tracker</h1>
+      <input id="input" type="number" placeholder="Amount"/>
+<textarea id="input2" type="text" placeholder="Description"></textarea>
+      <select id="mySelect">
+        <option>movie</option>
+        <option>electricity</option>
+        <option>food</option>
+        <option>rent</option>
+      </select>
       <button onclick="addItem()">Submit</button>
   <ul id="ul">
   </ul>
@@ -26,14 +32,16 @@ var items = JSON.parse(localStorage.getItem('appointment-app')) || [];
 function addItem() {
   var inputBox = document.querySelector('#input');
   var inputBox2 = document.querySelector('#input2');
-  var item = inputBox.value
-  var item2 = inputBox2.value
-  if (item === "" && item2 === "" )
-    return alert("Enter Something");
+  var inputBox3 = document.getElementById("mySelect");
+  var item = inputBox.value;
+  var item2 = inputBox2.value;
+  var item3 = inputBox3.value;
+  if (item === "" || item2 === "" || item3 === "" )
+    return alert("Enter all values");
 
   // If input is valid, add item to items array
   items.push({
-    value: `${item} ${item2}`
+    value: `${item} ${item2}  ${item3}`
   })
   
   // then convert to a string with JSON.stringify and save to localStorage
@@ -73,7 +81,7 @@ inputBox2.value=split[1];
 function listItems() {
   var list = "";
   for (var i = 0; i < items.length; i++) {
-    list+=`<li>${items[i].value}  <span style="border:2px solid green;" onclick='editItem(${i})'>Edit</span> <span style="border:2px solid red;" onclick='deleteItem(${i})'>delete</span></li>`
+    list+=`<li>${items[i].value}  <span style="border:2px solid green;cursor:pointer;" onclick='editItem(${i})'>Edit</span> <span style="cursor:pointer;border:2px solid red;" onclick='deleteItem(${i})'>delete</span></li>`
   }
   document.querySelector("#ul").innerHTML = list;
 }
