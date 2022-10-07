@@ -22,12 +22,20 @@
   </ul>
 </body>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script>
   // items array that contains all entries
 // JSON.parse is used to parse the stringified items from localStorage
 // if localStorage is empty, make the items variable an empty array
-var items = JSON.parse(localStorage.getItem('appointment-app')) || [];
+var items = [];
+axios.get('https://crudcrud.com/api/b3ce1704548a4bcbb533715b4a1a21d7/appdata')
+  .then(res=>{it(res.data)})
+  .catch(err=>console.log(err));
+  
+function it(it){items=it};
+
+
+
 // function to add item to the items array
 function addItem() {
   var inputBox = document.querySelector('#input');
@@ -40,12 +48,16 @@ function addItem() {
     return alert("Enter all values");
 
   // If input is valid, add item to items array
-  items.push({
+  let obj={
     value: `${item} ${item2}  ${item3}`
-  })
+  }
+
+  axios.post('https://crudcrud.com/api/b3ce1704548a4bcbb533715b4a1a21d7/appdata',obj)
+  .then(res=>console.log('created'))
+  .catch(err=>console.log('err'))
   
   // then convert to a string with JSON.stringify and save to localStorage
-  localStorage.setItem('appointment-app', JSON.stringify(items));
+  
   
   // call function to list all items
   listItems();
@@ -88,6 +100,9 @@ function listItems() {
 
 // function to run when page loads
 (function() {
+  axios.get('https://crudcrud.com/api/b3ce1704548a4bcbb533715b4a1a21d7/appdata')
+  .then(res=>{it(res.data)})
+  .catch(err=>console.log(err));
   listItems();
 })();
 </script>

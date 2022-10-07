@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<title>Online HTML Editor</title>
+<head>
+</head>
+<body>
+</body>
+<script>
+  let posts=[{title:'post1',timestamp:new Date().getTime()},
+    {title:'post2',timestamp:new Date().getTime()}]
+    
+function getpost(){
+    setInterval( ()=>{
+        let listing='';
+        posts.forEach( (post)=>{
+        listing+= `<li> ${post.title} was created ${Math.floor((new Date().getTime() - post.timestamp)/1000)} seconds ago</l1>`})
+        document.body.innerHTML=listing;},1000)
+}
+
+function createpost(post){
+
+return new Promise((res,rej)=>{ setTimeout( ()=>{
+        posts.push({...post,timestamp:new Date().getTime()})
+    res();
+    },2000)});
+}
+
+function deletepost(){
+
+return new Promise((res,rej)=>{ setTimeout( ()=>{
+    if(posts.length>0){posts.splice(-1);
+        res();}
+        else(rej('posts are empty'))
+    },1000)});
+}
+
+    // async function execute(){
+    //     await getpost();
+    //     await createpost({title:'post 3'});
+    //     await deletepost();
+    //     await deletepost();
+    //     await deletepost();
+    // }
+    // execute()
+
+    createpost({title:'post 3'})
+    .then(getpost)
+    .then(deletepost)
+    .then(deletepost)
+    .then(deletepost);
+</script>
+</html>
