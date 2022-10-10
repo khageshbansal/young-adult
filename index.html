@@ -28,10 +28,9 @@
 // JSON.parse is used to parse the stringified items from localStorage
 // if localStorage is empty, make the items variable an empty array
 var items = [];
-axios.get('https://crudcrud.com/api/b3ce1704548a4bcbb533715b4a1a21d7/appdata')
+axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
   .then(res=>{it(res.data)})
   .catch(err=>console.log(err));
-  
 function it(it){items=it};
 
 
@@ -52,15 +51,23 @@ function addItem() {
     value: `${item} ${item2}  ${item3}`
   }
 
-  axios.post('https://crudcrud.com/api/b3ce1704548a4bcbb533715b4a1a21d7/appdata',obj)
-  .then(res=>console.log('created'))
+  axios.post('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata',obj)
+  .then(res=>{})
   .catch(err=>console.log('err'))
   
   // then convert to a string with JSON.stringify and save to localStorage
   
   
   // call function to list all items
-  listItems();
+
+  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
+  .then(res=>{it(res.data)})
+  .catch(err=>console.log(err));
+
+
+  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
+  .then(res=>{listItems(res.data)})
+  .catch(err=>console.log(err));
   
   // clear input box
   inputBox.value = "";
@@ -71,9 +78,19 @@ function addItem() {
 // function to remove item from array with Array.splice()
 // removes item, then saves new items array to localStorage
 function deleteItem(index) {
-  items.splice(index, 1);
-  localStorage.setItem('appointment-app', JSON.stringify(items))
-  listItems();
+  axios.delete(`https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata/${index}`)
+  .then(res=>{})
+  .catch(err=>console.log(err));
+
+  
+  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
+  .then(res=>{it(res.data)})
+  .catch(err=>console.log(err));
+
+  
+  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
+  .then(res=>{listItems(res.data)})
+  .catch(err=>console.log(err));
 }
 
 
@@ -85,25 +102,26 @@ var deleteditem=  items.splice(index, 1)[0].value;
 var split=deleteditem.split(' ');
 inputBox.value=split[0];
 inputBox2.value=split[1];
-  listItems();
+
+
+deleteItem(index);
 }
 
 
 // function that generates list of items and populates the html
-function listItems() {
+function listItems(items) {
   var list = "";
   for (var i = 0; i < items.length; i++) {
-    list+=`<li>${items[i].value}  <span style="border:2px solid green;cursor:pointer;" onclick='editItem(${i})'>Edit</span> <span style="cursor:pointer;border:2px solid red;" onclick='deleteItem(${i})'>delete</span></li>`
+    list+=`<li>${items[i].value}  <span style="border:2px solid green;cursor:pointer;" onclick='editItem("${items[i]._id}")'>Edit</span> <span style="cursor:pointer;border:2px solid red;" onclick='deleteItem("${items[i]._id}")'>delete</span></li>`
   }
   document.querySelector("#ul").innerHTML = list;
 }
 
 // function to run when page loads
 (function() {
-  axios.get('https://crudcrud.com/api/b3ce1704548a4bcbb533715b4a1a21d7/appdata')
-  .then(res=>{it(res.data)})
+  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
+  .then(res=>{listItems(res.data)})
   .catch(err=>console.log(err));
-  listItems();
 })();
 </script>
 </html>
