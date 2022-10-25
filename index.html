@@ -28,7 +28,7 @@
 // JSON.parse is used to parse the stringified items from localStorage
 // if localStorage is empty, make the items variable an empty array
 var items = [];
-axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
+axios.get('https://crudcrud.com/api/94b6a46cbaa54b7ba036322e5eae9aff/appdata')
   .then(res=>{it(res.data)})
   .catch(err=>console.log(err));
 function it(it){items=it};
@@ -36,7 +36,7 @@ function it(it){items=it};
 
 
 // function to add item to the items array
-function addItem() {
+async function addItem() {
   var inputBox = document.querySelector('#input');
   var inputBox2 = document.querySelector('#input2');
   var inputBox3 = document.getElementById("mySelect");
@@ -48,27 +48,21 @@ function addItem() {
 
   // If input is valid, add item to items array
   let obj={
-    value: `${item} ${item2}  ${item3}`
+    value: `${item}  ${item2}  ${item3}`
   }
 
-  axios.post('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata',obj)
-  .then(res=>{})
-  .catch(err=>console.log('err'))
+  await axios.post('https://crudcrud.com/api/94b6a46cbaa54b7ba036322e5eae9aff/appdata',obj)
   
   // then convert to a string with JSON.stringify and save to localStorage
   
   
   // call function to list all items
 
-  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
-  .then(res=>{it(res.data)})
-  .catch(err=>console.log(err));
-
-
-  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
-  .then(res=>{listItems(res.data)})
-  .catch(err=>console.log(err));
+  let res=await axios.get('https://crudcrud.com/api/94b6a46cbaa54b7ba036322e5eae9aff/appdata')
   
+  await it(res.data)
+  await listItems(res.data)
+
   // clear input box
   inputBox.value = "";
   inputBox2.value = "";
@@ -77,20 +71,14 @@ function addItem() {
 
 // function to remove item from array with Array.splice()
 // removes item, then saves new items array to localStorage
-function deleteItem(index) {
-  axios.delete(`https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata/${index}`)
-  .then(res=>{})
-  .catch(err=>console.log(err));
+async function deleteItem(index) {
+  await axios.delete(`https://crudcrud.com/api/94b6a46cbaa54b7ba036322e5eae9aff/appdata/${index}`)
+
 
   
-  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
-  .then(res=>{it(res.data)})
-  .catch(err=>console.log(err));
-
-  
-  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
-  .then(res=>{listItems(res.data)})
-  .catch(err=>console.log(err));
+  let res= await axios.get('https://crudcrud.com/api/94b6a46cbaa54b7ba036322e5eae9aff/appdata')
+  await it(res.data)
+  await listItems(res.data)
 }
 
 
@@ -118,10 +106,10 @@ function listItems(items) {
 }
 
 // function to run when page loads
-(function() {
-  axios.get('https://crudcrud.com/api/8962e45e53f840d9b74bcf0c2c034c1f/appdata')
-  .then(res=>{listItems(res.data)})
-  .catch(err=>console.log(err));
+(async function() {
+  let res= await axios.get('https://crudcrud.com/api/94b6a46cbaa54b7ba036322e5eae9aff/appdata')
+  await it(res.data)
+  await listItems(res.data)
 })();
 </script>
 </html>
